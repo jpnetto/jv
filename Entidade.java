@@ -1,35 +1,72 @@
-package jv;
+public abstract class Entidade {
 
-public class Entidade {
+    protected int id;
+    protected boolean persistido;
 
+    // Construtor vazio
+    public Entidade() {
+        this.persistido = false;
+    }
 
-    //atributos da classe
-    private int id;
-    private boolean persistido;
+    // Construtor com id
+    public Entidade(int id) {
+        this.id = id;
+        this.persistido = false;
+    }
 
-    //getters e setters
-    public int getId(){
+    // Getters e setters
+    public int getId() {
         return id;
     }
 
-    public void setId(int id){
+    public void setId(int id) {
         this.id = id;
-    }   
+    }
 
-    public boolean getPersistido(){
+    public boolean isPersistido() {
         return persistido;
     }
 
-    public void setPersistido(boolean persistido){
+    public void setPersistido(boolean persistido) {
         this.persistido = persistido;
     }
 
-    //funções
-    public String toString(){
-        return "id = " + id;
+    // Métodos de persistência
+    public boolean salvar() {
+        if (!persistido) {
+            // aqui se salvara no JSON
+            persistido = true;
+            return true;
+        }
+        return false;
     }
 
-    public void salvar(int id){
+    public boolean atualizar() {
+        if (persistido) {
+            // aqui se atualizara no JSON
+            return true;
+        }
+        return false;
+    }
 
+    public boolean apagar(int id) {
+        if (persistido) {
+            // aqui se apagara no JSON
+            persistido = false;
+            return true;
+        }
+        return false;
+    }
+
+    public boolean carregar(int id) {
+        // aqui se carregara no JSON
+        return false;
+    }
+
+    // Método abstrato
+    public abstract java.util.List<? extends Entidade> carregarTodos();
+
+    public String toString() {
+        return "Entidade [id=" + id + ", persistido=" + persistido + "]";
     }
 }

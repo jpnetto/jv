@@ -10,15 +10,18 @@ public class Pokemon extends Entidade{
     private ArrayList<Tipo> tipo;
     private double altura;
     private double peso;
+    private int stats;
     private String descricao;
 
+
     //getters e setters
-    public Pokemon(int id, String nome, int numeroPokedex, double altura, double peso, String descricao) {
+    public Pokemon(int id, String nome, int numeroPokedex, double altura, double peso, int stats, String descricao) {
         super(id);
         this.nome = nome;
         this.numeroPokedex = numeroPokedex;
         this.altura = altura;
         this.peso = peso;
+        this.stats = stats;
         this.descricao = descricao;
         this.tipo = new ArrayList<>();
     }
@@ -69,6 +72,14 @@ public class Pokemon extends Entidade{
 
     public void setDescricao(String descricao) {
         this.descricao = descricao;
+    }
+
+    public int getStats() {
+        return stats;
+    }
+
+    public void setStats(int stats) {
+        this.stats = stats;
     }
 
 

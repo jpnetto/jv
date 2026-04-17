@@ -56,5 +56,28 @@ public class Main {
         p = Servicos.compararPokemons(bulbasaur, pikachu);
         System.out.println("\nEm uma batalha pokémon, " + p.getNome() + " leva a vantagem e sai vitorioso!");
 
+        // Criando treinadores
+        Treinador ash = new Treinador(1, "Ash Ketchum","Kanto", 8);
+        System.err.println("\nTreinador: " + ash.getNome() + "\nRegião: " + ash.getRegiao() + "\nInsígnias: " + ash.getInsignias() + "\n");
+        Treinador misty = new Treinador(2, "Misty","Galar", 7);
+        System.err.println("\nTreinador: " + misty.getNome() + "\nRegião: " + misty.getRegiao() + "\nInsígnias: " + misty.getInsignias() + "\n");   
+
+        // Adicionando pokémons aos treinadores
+        ash.addPokemon(squirtle);
+        ash.addPokemon(pikachu);
+        System.out.println("\nPokémons de " + ash.getNome() + ":");
+        for (Pokemon pokemon : ash.getPokemons()) {
+            System.out.println("- " + pokemon.getNome());
+        }
+        misty.addPokemon(charmander);
+        misty.addPokemon(bulbasaur);
+        System.out.println("\nPokémons de " + misty.getNome() + ":");
+        for (Pokemon pokemon : misty.getPokemons()) {
+            System.out.println("- " + pokemon.getNome());
+        }
+
+        // Batalha entre treinadores
+        Treinador vencedor = Servicos.compararTreinadores(ash, misty);
+        System.out.println("\nNa batalha entre treinadores, " + vencedor.getNome() + " leva a vantagem e sai vitorioso!");
     }
 }

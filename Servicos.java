@@ -11,6 +11,8 @@ public class Servicos {
         System.out.print("Digite a descrição do Tipo: ");
         String descricao = scanner.nextLine();
 
+        scanner.close();
+
         Tipo tipo = new Tipo(id, nome, descricao);
         System.out.println("Tipo criado com sucesso!");
         return tipo;
@@ -37,6 +39,8 @@ public class Servicos {
         System.out.print("Digite a descrição do Pokémon: ");
         String descricao = scanner.nextLine();
 
+        scanner.close();
+
         Pokemon pokemon = new Pokemon(id, nome, numeroPokedex, altura, peso, stats, descricao);
         System.out.println("Pokémon criado com sucesso!");
 
@@ -56,6 +60,8 @@ public class Servicos {
 
         Treinador treinador = new Treinador(id, nome, regiao, insignias);
         System.out.println("Treinador criado com sucesso!");
+
+        scanner.close();
 
         return treinador;
     }

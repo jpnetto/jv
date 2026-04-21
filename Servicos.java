@@ -1,7 +1,80 @@
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 public class Servicos {
+    public static Tipo criarTipo (int id){
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("Digite o nome do Tipo: ");
+        String nome = scanner.nextLine();
+
+        System.out.print("Digite a descrição do Tipo: ");
+        String descricao = scanner.nextLine();
+
+        Tipo tipo = new Tipo(id, nome, descricao);
+        System.out.println("Tipo criado com sucesso!\n Deseja adicionar fraquezas a este tipo? (s/n)");
+        String resposta = scanner.nextLine();
+        if(resposta.equalsIgnoreCase("s")){
+            boolean adicionarFraquezas = true;
+            while (adicionarFraquezas) {    
+                System.out.print("Digite o nome do Tipo de fraqueza: ");
+                String nomeFraqueza = scanner.nextLine();
+                Tipo fraqueza = new Tipo(0, nomeFraqueza, ""); // Criando um tipo temporário para a fraqueza
+                tipo.adicionarFraquezas(fraqueza);
+                
+                System.out.print("Deseja adicionar outra fraqueza? (s/n): ");
+                String respostaFraqueza = scanner.nextLine();
+                if (!respostaFraqueza.equalsIgnoreCase("s")) {
+                    adicionarFraquezas = false;
+                }
+            }
+        }   
+        return tipo;
+    }
+
+    public static Pokemon criarPokemon(int id){
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("Digite o nome do Pokémon: ");
+        String nome = scanner.nextLine();
+
+        System.out.print("Digite o número na Pokédex: ");
+        int numeroPokedex = scanner.nextInt();
+
+        System.out.print("Digite a altura do Pokémon: ");
+        double altura = scanner.nextDouble();
+
+        System.out.print("Digite o peso do Pokémon: ");
+        double peso = scanner.nextDouble();
+
+        System.out.print("Digite os stats do Pokémon: ");
+        int stats = scanner.nextInt();
+        scanner.nextLine(); // Consumir a nova linha
+
+        System.out.print("Digite a descrição do Pokémon: ");
+        String descricao = scanner.nextLine();
+
+        Pokemon pokemon = new Pokemon(id, nome, numeroPokedex, altura, peso, stats, descricao);
+        System.out.println("Pokémon criado com sucesso!");
+
+        return pokemon;
+    }
+
+    public static Treinador criarTreinador(int id){
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("Digite o nome do Treinador: ");
+        String nome = scanner.nextLine();
+
+        System.out.print("Digite a região do Treinador: ");
+        String regiao = scanner.nextLine();
+
+        System.out.print("Digite o número de insígnias do Treinador: ");
+        int insignias = scanner.nextInt();
+
+        Treinador treinador = new Treinador(id, nome, regiao, insignias);
+        System.out.println("Treinador criado com sucesso!");
+
+        return treinador;
+    }
     
     public static Pokemon compararPokemons(Pokemon p1, Pokemon p2) {
         

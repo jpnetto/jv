@@ -12,23 +12,7 @@ public class Servicos {
         String descricao = scanner.nextLine();
 
         Tipo tipo = new Tipo(id, nome, descricao);
-        System.out.println("Tipo criado com sucesso!\n Deseja adicionar fraquezas a este tipo? (s/n)");
-        String resposta = scanner.nextLine();
-        if(resposta.equalsIgnoreCase("s")){
-            boolean adicionarFraquezas = true;
-            while (adicionarFraquezas) {    
-                System.out.print("Digite o nome do Tipo de fraqueza: ");
-                String nomeFraqueza = scanner.nextLine();
-                Tipo fraqueza = new Tipo(0, nomeFraqueza, ""); // Criando um tipo temporário para a fraqueza
-                tipo.adicionarFraquezas(fraqueza);
-                
-                System.out.print("Deseja adicionar outra fraqueza? (s/n): ");
-                String respostaFraqueza = scanner.nextLine();
-                if (!respostaFraqueza.equalsIgnoreCase("s")) {
-                    adicionarFraquezas = false;
-                }
-            }
-        }   
+        System.out.println("Tipo criado com sucesso!");
         return tipo;
     }
 

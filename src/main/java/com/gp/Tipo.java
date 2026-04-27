@@ -16,6 +16,10 @@ public class Tipo extends Entidade {
     @JsonIgnore
     private List<Tipo> fraquezas;
 
+    public Tipo() {
+        
+    }
+
     public Tipo(@JsonProperty("id") int id, 
                 @JsonProperty("nome") String nome, 
                 @JsonProperty("descricao") String descricao) {
@@ -44,8 +48,31 @@ public class Tipo extends Entidade {
     }
 
     public void adicionarFraquezas(Tipo tipo) {
-        this.fraquezas.add(tipo);
+        if (!this.fraquezas.contains(tipo)) {
+            this.fraquezas.add(tipo);
+        }
     }
+
+    // Função para buscar um tipo por nome em uma lista de tipos
+    public static Tipo buscarTipoPorNome(List<Tipo> tipos, String nome) {
+        for (Tipo tipo : tipos) {
+            if (tipo.getNome().equalsIgnoreCase(nome)) {
+                return tipo;
+            }
+        }
+        return null;
+    }
+
+    // Função para adicionar uma fraqueza a um tipo usando o nome da fraqueza
+    public static boolean adicionarFraquezaPorNome(Tipo tipo, List<Tipo> tiposDisponiveis, String nomeFraqueza) {
+        Tipo fraqueza = buscarTipoPorNome(tiposDisponiveis, nomeFraqueza);
+        if (fraqueza != null) {
+            tipo.adicionarFraquezas(fraqueza);
+            return true;
+        }
+        return false;
+    }
+
 
     public void removerFraquezas(Tipo tipo) {
         this.fraquezas.remove(tipo);

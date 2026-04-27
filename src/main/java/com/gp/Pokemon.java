@@ -108,6 +108,26 @@ public class Pokemon extends Entidade{
         return "id = " + id;
     }
 
+    // Função para buscar um tipo por nome em uma lista de tipos
+    public static Pokemon buscarPokemonPorNome(List<Pokemon> pokemons, String nome) {
+        for (Pokemon pokemon : pokemons) {
+            if (pokemon.getNome().equalsIgnoreCase(nome)) {
+                return pokemon;
+            }
+        }
+        return null;
+    }
+
+    // Função para adicionar uma fraqueza a um tipo usando o nome da fraqueza
+    public static boolean adicionarTipoPorNome(Pokemon pokemon, List<Tipo> tiposDisponiveis, String nomeTipo) {
+        Tipo tipo = Tipo.buscarTipoPorNome(tiposDisponiveis, nomeTipo);
+        if (tipo != null) {
+            tipo.adicionarFraquezas(tipo);
+            return true;
+        }
+        return false;
+    }    
+
     @Override
     public java.util.List<Pokemon> carregarTodos() {
         ObjectMapper mapper = new ObjectMapper();

@@ -69,6 +69,26 @@ public class Treinador extends Entidade {
         this.insignias = insignias;
     }
 
+    // Função para buscar um tipo por nome em uma lista de tipos
+    public static Treinador buscarTreinadorPorNome(List<Treinador> treinadores, String nome) {
+        for (Treinador treinador : treinadores) {
+            if (treinador.getNome().equalsIgnoreCase(nome)) {
+                return treinador;
+            }
+        }
+        return null;
+    }
+
+    // Função para adicionar uma fraqueza a um tipo usando o nome da fraqueza
+    public static boolean adicionarFraquezaPorNome(Treinador treinador, List<Pokemon> pokemonsDisponiveis, String nomePokemon) {
+        Pokemon Pk = Pokemon.buscarPokemonPorNome(pokemonsDisponiveis, nomePokemon);
+        if (Pk != null) {
+            treinador.addPokemon(Pk);
+            return true;
+        }
+        return false;
+    }
+
     @Override
     public List<Treinador> carregarTodos() {
         ObjectMapper mapper = new ObjectMapper();
@@ -82,6 +102,8 @@ public class Treinador extends Entidade {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        
 
         return treinadores;
     }

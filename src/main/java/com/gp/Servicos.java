@@ -4,23 +4,22 @@ import java.util.List;
 import java.util.Scanner;
 
 public class Servicos {
-    public static Tipo criarTipo (int id){
-        Scanner scanner = new Scanner(System.in);
+    public static Tipo criarTipo (int id, Scanner scanner){
+        scanner = new Scanner(System.in);
         System.out.print("Digite o nome do Tipo: ");
         String nome = scanner.nextLine();
 
         System.out.print("Digite a descrição do Tipo: ");
         String descricao = scanner.nextLine();
 
-        scanner.close();
-
         Tipo tipo = new Tipo(id, nome, descricao);
+        tipo.salvar("tipos.json", Tipo.class);
         System.out.println("Tipo criado com sucesso!");
         return tipo;
     }
 
-    public static Pokemon criarPokemon(int id){
-        Scanner scanner = new Scanner(System.in);
+    public static Pokemon criarPokemon(int id, Scanner scanner){
+        scanner = new Scanner(System.in);
         System.out.print("Digite o nome do Pokémon: ");
         String nome = scanner.nextLine();
 
@@ -40,16 +39,15 @@ public class Servicos {
         System.out.print("Digite a descrição do Pokémon: ");
         String descricao = scanner.nextLine();
 
-        scanner.close();
-
         Pokemon pokemon = new Pokemon(id, nome, numeroPokedex, altura, peso, stats, descricao);
         System.out.println("Pokémon criado com sucesso!");
+        pokemon.salvar("pokemons.json", Pokemon.class);
 
         return pokemon;
     }
 
-    public static Treinador criarTreinador(int id){
-        Scanner scanner = new Scanner(System.in);
+    public static Treinador criarTreinador(int id, Scanner scanner){
+        scanner = new Scanner(System.in);
         System.out.print("Digite o nome do Treinador: ");
         String nome = scanner.nextLine();
 
@@ -61,9 +59,7 @@ public class Servicos {
 
         Treinador treinador = new Treinador(id, nome, regiao, insignias);
         System.out.println("Treinador criado com sucesso!");
-
-        scanner.close();
-
+        treinador.salvar("treinadores.json", Treinador.class);
         return treinador;
     }
     
@@ -78,7 +74,7 @@ public class Servicos {
         for (Tipo t1 : tipo1) {
             for (Tipo t2 : tipo2) {
                 if (t1.getFraquezas().contains(t2)) {
-                    cont2++;
+                    cont1++; // p1 tem vantagem sobre p2
                 }
             }
        }
@@ -105,35 +101,45 @@ public class Servicos {
 
         List<Pokemon> pokemonsT1 = t1.getPokemons();
         List<Pokemon> pokemonsT2 = t2.getPokemons();
-
+        // Compara cada Pokémon de t1 com cada Pokémon de t2
         for (Pokemon p1 : pokemonsT1) {
             for (Pokemon p2 : pokemonsT2) {
                 Pokemon vencedor = compararPokemons(p1, p2);
                 if (vencedor == p1) {
+                    System.out.println(p1.getNome() + " do treinador " + t1.getNome() + " venceu contra " + p2.getNome() + " do treinador " + t2.getNome());
                     cont1++;
                 } else if (vencedor == p2) {
+                    System.out.println(p2.getNome() + " do treinador " + t2.getNome() + " venceu contra " + p1.getNome() + " do treinador " + t1.getNome());
                     cont2++;
                 }
             }
         }
-
+        // em caso de empate, o treinador com mais insígnias vence, caso contrário, vence o treinador com mais vitórias nos combates entre os pokémons
         if(cont1==cont2){
             if(t1.getInsignias() > t2.getInsignias()){
                 t1.setInsignias(t1.getInsignias() + 1);
-            } else{
+                System.out.println("Foi um empate mas o treinador " + t1.getNome() + " ganhou a batalha, por seu número de insígnias!");
+            } else if(t1.getInsignias() == t2.getInsignias()){
+                System.out.println("Foi um empate total entre os treinadores " + t1.getNome() + " e " + t2.getNome() + "!");
+            }
+            else{
                 t2.setInsignias(t2.getInsignias() + 1);
+                System.out.println("Foi um empate, mas o treinador " + t2.getNome() + " ganhou a batalha, por seu número de insígnias!");
             }
             return (t1.getInsignias() > t2.getInsignias()) ? t1 : t2;
 
         } else{
             if(cont1>cont2){
                 t1.setInsignias(t1.getInsignias() + 1);
+                System.out.println("Treinador " + t1.getNome() + " ganhou a batalha!");
             } else{
                 t2.setInsignias(t2.getInsignias() + 1);
+                System.out.println("Treinador " + t2.getNome() + " ganhou a batalha!");
             }
             return (cont1 > cont2) ? t1 : t2;
         }
     }
+
 }
 
 

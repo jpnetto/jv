@@ -2,6 +2,7 @@ package com.gp;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -129,19 +130,27 @@ public class Pokemon extends Entidade{
     }    
 
     @Override
-    public java.util.List<Pokemon> carregarTodos() {
+    public List<Pokemon> carregarTodos() {
         ObjectMapper mapper = new ObjectMapper();
-        List<Pokemon> pokemons = new ArrayList<>();
+        File arquivo = new File("pokemons.json");
+
+        
+        if (!arquivo.exists() || arquivo.length() == 0) {
+            System.out.println("Não há pokémons por enquanto!");
+            return Collections.emptyList();
+        }
+
         try {
-            pokemons = mapper.readValue(
-                new File("pokemons.json"),
+            return mapper.readValue(
+                arquivo,
                 new com.fasterxml.jackson.core.type.TypeReference<List<Pokemon>>() {}
             );
         } catch (IOException e) {
             e.printStackTrace();
+            return Collections.emptyList();
         }
-        return pokemons;
     }
+
     
     
     

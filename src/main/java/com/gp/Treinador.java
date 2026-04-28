@@ -2,6 +2,7 @@ package com.gp;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
@@ -92,21 +93,24 @@ public class Treinador extends Entidade {
     @Override
     public List<Treinador> carregarTodos() {
         ObjectMapper mapper = new ObjectMapper();
-        List<Treinador> treinadores = new ArrayList<>();
+        File arquivo = new File("treinadores.json");
+
+        if (!arquivo.exists() || arquivo.length() == 0) {
+            System.out.println("Não há treinadores por enquanto!");
+            return Collections.emptyList();
+        }
 
         try {
-            treinadores = mapper.readValue(
-                new File("treinadores.json"),
+            return mapper.readValue(
+                arquivo,
                 new com.fasterxml.jackson.core.type.TypeReference<List<Treinador>>() {}
             );
         } catch (IOException e) {
             e.printStackTrace();
+            return Collections.emptyList();
         }
-
-        
-
-        return treinadores;
     }
+
 
 
     

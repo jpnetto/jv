@@ -1,6 +1,8 @@
 package com.gp;
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -89,18 +91,25 @@ public class Tipo extends Entidade {
 
 
     @Override
-    public java.util.List<Tipo> carregarTodos() {
+    public List<Tipo> carregarTodos() {
         ObjectMapper mapper = new ObjectMapper();
-        List<Tipo> tipos = new ArrayList<>();
+        File arquivo = new File("tipos.json");
+
+        if (!arquivo.exists() || arquivo.length() == 0) {
+            System.err.println("Não há tipos por enquanto!");
+            return Collections.emptyList();
+        }
+
         try {
-            tipos = mapper.readValue(
-                new File("tipos.json"),
+            return mapper.readValue(
+                arquivo,
                 new com.fasterxml.jackson.core.type.TypeReference<List<Tipo>>() {}
             );
-        } catch (Exception e) {
+        } catch (IOException e) {
             e.printStackTrace();
+            return Collections.emptyList();
         }
-        return tipos;
     }
+
 
 }

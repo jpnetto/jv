@@ -6,6 +6,7 @@ import java.util.Collections;
 import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import java.util.Scanner;
 
 public class Pokemon extends Entidade{
 
@@ -118,16 +119,34 @@ public class Pokemon extends Entidade{
         }
         return null;
     }
+    
+    public static Pokemon criarPokemon(int id, Scanner scanner){
+        scanner = new Scanner(System.in);
+        System.out.print("Digite o nome do Pokémon: ");
+        String nome = scanner.nextLine();
 
-    // Função para adicionar uma fraqueza a um tipo usando o nome da fraqueza
-    public static boolean adicionarTipoPorNome(Pokemon pokemon, List<Tipo> tiposDisponiveis, String nomeTipo) {
-        Tipo tipo = Tipo.buscarTipoPorNome(tiposDisponiveis, nomeTipo);
-        if (tipo != null) {
-            tipo.adicionarFraquezas(tipo);
-            return true;
-        }
-        return false;
-    }    
+        System.out.print("Digite o número na Pokédex: ");
+        int numeroPokedex = scanner.nextInt();
+
+        System.out.print("Digite a altura do Pokémon: ");
+        double altura = scanner.nextDouble();
+
+        System.out.print("Digite o peso do Pokémon: ");
+        double peso = scanner.nextDouble();
+
+        System.out.print("Digite os stats do Pokémon: ");
+        int stats = scanner.nextInt();
+        scanner.nextLine(); // Consumir a nova linha
+
+        System.out.print("Digite a descrição do Pokémon: ");
+        String descricao = scanner.nextLine();
+
+        Pokemon pokemon = new Pokemon(id, nome, numeroPokedex, altura, peso, stats, descricao);
+        System.out.println("Pokémon criado com sucesso!");
+        pokemon.salvar("pokemons.json", Pokemon.class);
+
+        return pokemon;
+    }
 
     @Override
     public List<Pokemon> carregarTodos() {

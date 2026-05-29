@@ -9,6 +9,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import java.util.Scanner;
 
 
 public class Tipo extends Entidade {
@@ -65,14 +66,18 @@ public class Tipo extends Entidade {
         return null;
     }
 
-    // Função para adicionar uma fraqueza a um tipo usando o nome da fraqueza
-    public static boolean adicionarFraquezaPorNome(Tipo tipo, List<Tipo> tiposDisponiveis, String nomeFraqueza) {
-        Tipo fraqueza = buscarTipoPorNome(tiposDisponiveis, nomeFraqueza);
-        if (fraqueza != null) {
-            tipo.adicionarFraquezas(fraqueza);
-            return true;
-        }
-        return false;
+    public static Tipo criarTipo (int id, Scanner scanner){
+        scanner = new Scanner(System.in);
+        System.out.print("Digite o nome do Tipo: ");
+        String nome = scanner.nextLine();
+
+        System.out.print("Digite a descrição do Tipo: ");
+        String descricao = scanner.nextLine();
+
+        Tipo tipo = new Tipo(id, nome, descricao);
+        tipo.salvar("tipos.json", Tipo.class);
+        System.out.println("Tipo criado com sucesso!");
+        return tipo;
     }
 
 

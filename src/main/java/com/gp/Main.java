@@ -27,20 +27,19 @@ public class Main {
                     for (Tipo tipo : todosTipos) {
                         System.out.println("- " + tipo.getNome());
                     };
-                    System.out.println("O que deseja fazer com o Tipo?");
+                    System.out.println("O que deseja fazer?");
                     System.out.println("1. Criar Tipo");
                     System.out.println("2. Alterar Tipo");
                     System.out.println("3. Remover Tipo");
-                    System.out.println("4. Adicionar fraqueza a um Tipo");
-                    System.out.println("5. Voltar");
+                    System.out.println("6. Voltar");
                     int tipoOpcao = scanner.nextInt();
-                        switch (tipoOpcao) {
+                    switch (tipoOpcao) {
                             case (1):{
-                                Tipo tipo = Servicos.criarTipo(totalEntidades+1, scanner); // ID fixo para exemplo
+                                Tipo tipo = Tipo.criarTipo(totalEntidades+1, scanner); // ID fixo para exemplo
                                 break;
                             }
                             case (2):{
-                                System.out.print("Digite o nome do Tipo: ");
+                                System.out.print("Digite o nome do tipo que deseja alterar: ");
                                 scanner.nextLine(); // Consumir a nova linha
                                 String nomeTipo = scanner.nextLine();
                                 Tipo tipoAlterar = Tipo.buscarTipoPorNome(todosTipos, nomeTipo);
@@ -50,7 +49,7 @@ public class Main {
                                     System.out.println("Tipo não encontrado.");
                                     break;
                                 }
-                                System.out.println("O que deseja alterar no Tipo?");
+                                System.out.println("O que deseja alterar no Tipo" + tipoAlterar.getNome() + "?");
                                 System.out.println("1. Nome");
                                 System.out.println("2. Descrição");
                                 System.out.println("3. Fraquezas");
@@ -73,17 +72,41 @@ public class Main {
                                             System.out.println("Descrição do Tipo alterada com sucesso!");
                                             break;
                                         case 3:
-                                            scanner.nextLine(); // Limpar o buffer
-                                            System.out.println("Digite o nome da fraqueza a ser adicionada:");
-                                            String nomeFraqueza = scanner.nextLine();
-                                            boolean sucesso = Tipo.adicionarFraquezaPorNome(tipoAlterar, todosTipos, nomeFraqueza);
-                                            if (sucesso) {
-                                                tipoAlterar.salvar("tipos.json", Tipo.class);
-                                                System.out.println("Fraqueza adicionada com sucesso!");
-                                            } else {
-                                                System.out.println("Tipo de fraqueza não encontrado.");
+                                            System.out.println("O que deseja fazer com as fraquezas do Tipo " + tipoAlterar.getNome() + "?");
+                                            System.out.println("1. Adicionar fraqueza");
+                                            System.out.println("2. Remover fraqueza"); 
+                                            int fraquezaTipoOpcao = scanner.nextInt();
+                                            switch (fraquezaTipoOpcao) {
+                                                case 1:
+                                                scanner.nextLine(); // Limpar o buffer
+                                                System.out.println("Digite o nome da fraqueza a ser adicionada:");
+                                                String nomeFraqueza = scanner.nextLine();
+                                                Tipo tipoFraqueza = Tipo.buscarTipoPorNome(todosTipos, nomeFraqueza);
+                                                if (tipoFraqueza != null) {
+                                                    tipoAlterar.adicionarFraquezas(tipoFraqueza);
+                                                    tipoAlterar.salvar("tipos.json", Tipo.class);
+                                                    System.out.println("Fraqueza adicionada com sucesso!");
+                                                } else {
+                                                    System.out.println("Tipo de fraqueza não encontrado.");
+                                                }
+                                                break;
+                                                case 2:
+                                                scanner.nextLine(); // Limpar o buffer
+                                                System.out.println("Digite o nome da fraqueza a ser removida:");
+                                                String nomeFraquezaRemover = scanner.nextLine();
+                                                Tipo tipoFraquezaRemover = Tipo.buscarTipoPorNome(todosTipos, nomeFraquezaRemover);
+                                                if (tipoFraquezaRemover != null) {
+                                                    tipoAlterar.removerFraquezas(tipoFraquezaRemover);
+                                                    tipoAlterar.salvar("tipos.json", Tipo.class);
+                                                    System.out.println("Fraqueza removida com sucesso!");
+                                                } else {
+                                                    System.out.println("Tipo de fraqueza não encontrado.");
+                                                }
+                                                break;
+                                                default:
+                                                    System.out.println("Opção inválida. Tente novamente.");
+                                                    break;
                                             }
-                                            break;
                                         case 4:
                                             break;
                                         default:
@@ -95,15 +118,15 @@ public class Main {
                                 System.out.print("Digite o nome do Tipo: ");
                                 scanner.nextLine(); // Consumir a nova linha
                                 String nomeTipo = scanner.nextLine();
-                                Tipo tipoAlterar = Tipo.buscarTipoPorNome(todosTipos, nomeTipo);
-                                if (tipoAlterar != null) {
+                                Tipo tipoRemover = Tipo.buscarTipoPorNome(todosTipos, nomeTipo);
+                                if (tipoRemover != null) {
                                     System.out.println("Tipo encontrado com sucesso!");
+                                    tipoRemover.apagar("tipos.json", Tipo.class);
+                                    System.out.println("Tipo removido com sucesso!");
                                 } else {
                                     System.out.println("Tipo não encontrado.");
                                     break;
                                 }
-                                tipoAlterar.apagar("tipos.json", Tipo.class);
-                                System.out.println("Tipo removido com sucesso!");
                                 break;
                             }
                             case (4):{
@@ -127,6 +150,26 @@ public class Main {
                                 break;
                             }
                             case (5):{
+                                System.out.print("Digite o nome do Tipo: ");
+                                scanner.nextLine(); // Consumir a nova linha
+                                String nomeTipo = scanner.nextLine();
+                                Tipo tipoRemoverFraqueza = Tipo.buscarTipoPorNome(todosTipos, nomeTipo);
+                                if (tipoRemoverFraqueza != null) {
+                                    System.out.println("Tipo encontrado com sucesso!");
+                                } else {
+                                    System.out.println("Tipo não encontrado.");
+                                    break;
+                                }
+                                // Remover fraqueza de um Tipo
+                                scanner.nextLine(); // Limpar o buffer
+                                System.out.println("Digite o nome do Tipo para remover a fraqueza:");
+                                String nomeTipoFraqueza = scanner.nextLine();
+                                tipoRemoverFraqueza.removerFraquezas(Tipo.buscarTipoPorNome(todosTipos, nomeTipoFraqueza));
+                                tipoRemoverFraqueza.salvar("tipos.json", Tipo.class);
+                                System.out.println("Fraqueza removida com sucesso!");
+                                break;
+                            }
+                            case (6):{
                                 break;
                             }
                             default:
@@ -143,19 +186,19 @@ public class Main {
                     int pokemonOpcao = scanner.nextInt();
                         switch (pokemonOpcao) {
                             case 1:
-                                Pokemon pokemon = Servicos.criarPokemon(totalEntidades+1, scanner); // ID fixo para exemplo
+                                Pokemon pokemon = Pokemon.criarPokemon(totalEntidades+1, scanner); 
                                 break;
                             case 2:
                                 System.out.print("Digite o nome do Pokémon: ");
-                            scanner.nextLine(); // Consumir a nova linha
-                            String nomePokemon = scanner.nextLine();
-                            Pokemon pokemonAlterar = Pokemon.buscarPokemonPorNome(todosPokemons, nomePokemon);
-                            if (pokemonAlterar != null) {
-                                System.out.println("Pokémon encontrado!");
-                            } else {
-                                System.out.println("Pokémon não encontrado.");
-                                break;
-                            }
+                                scanner.nextLine(); // Consumir a nova linha
+                                String nomePokemon = scanner.nextLine();
+                                Pokemon pokemonAlterar = Pokemon.buscarPokemonPorNome(todosPokemons, nomePokemon);
+                                if (pokemonAlterar != null) {
+                                    System.out.println("Pokémon encontrado!");
+                                } else {
+                                    System.out.println("Pokémon não encontrado.");
+                                    break;
+                                }
                                 System.out.println("O que deseja alterar no Pokémon?");
                                 System.out.println("1. Nome");
                                 System.out.println("2. Número na Pokédex");
@@ -163,9 +206,10 @@ public class Main {
                                 System.out.println("4. Peso");
                                 System.out.println("5. Stats");
                                 System.out.println("6. Descrição");
-                                System.out.println("7. Voltar");
+                                System.out.println("7. Tipos");
+                                System.out.println("8. Voltar");
                                 int alterarPokemonOpcao = scanner.nextInt();
-                                    switch (alterarPokemonOpcao) {
+                                switch (alterarPokemonOpcao) {
                                         case 1:
                                             System.out.println("Digite o novo nome do Pokémon:");
                                             String novoNome = scanner.nextLine();
@@ -210,6 +254,44 @@ public class Main {
                                             System.out.println("Descrição do Pokémon alterada com sucesso!");
                                             break;
                                         case 7:
+                                            scanner.nextLine(); // Limpar o buffer
+                                            System.out.println("O que deseja alterar nos tipos do Pokémon?");
+                                            System.out.println("1. Adicionar tipo");
+                                            System.out.println("2. Remover tipo");
+                                            int tipoPokemonOpcao = scanner.nextInt();
+                                            switch (tipoPokemonOpcao) {
+                                                case 1:
+                                                    scanner.nextLine(); // Limpar o buffer
+                                                    System.out.println("Digite o nome do Tipo para adicionar ao Pokémon:");
+                                                    String nomeTipoAdicionar = scanner.nextLine();
+                                                    Tipo tipoAdicionar = Tipo.buscarTipoPorNome(todosTipos, nomeTipoAdicionar);
+                                                    if (tipoAdicionar != null) {
+                                                        pokemonAlterar.adicionarTipo(tipoAdicionar);
+                                                        pokemonAlterar.salvar("pokemons.json", Pokemon.class);
+                                                        System.out.println("Tipo adicionado ao Pokémon com sucesso!");
+                                                    } else {
+                                                        System.out.println("Tipo não encontrado.");
+                                                    }
+                                                    break;
+                                                case 2:
+                                                    scanner.nextLine(); // Limpar o buffer
+                                                    System.out.println("Digite o nome do Tipo para remover do Pokémon:");
+                                                    String nomeTipoRemover = scanner.nextLine();
+                                                    Tipo tipoRemover = Tipo.buscarTipoPorNome(todosTipos, nomeTipoRemover);
+                                                    if (tipoRemover != null) {
+                                                        pokemonAlterar.removerTipo(tipoRemover);
+                                                        pokemonAlterar.salvar("pokemons.json", Pokemon.class);
+                                                        System.out.println("Tipo removido do Pokémon com sucesso!");
+                                                    } else {
+                                                        System.out.println("Tipo não encontrado.");
+                                                    }
+                                                    break;
+                                                default:
+                                                    System.out.println("Opção inválida. Tente novamente.");
+                                                    break;
+                                            }
+                                            break;
+                                        case 8:
                                             break;
                                         default:
                                             System.out.println("Opção inválida. Tente novamente.");
@@ -223,12 +305,12 @@ public class Main {
                                 Pokemon pkAlterar = Pokemon.buscarPokemonPorNome(todosPokemons, nomePk);
                                 if (pkAlterar != null) {
                                     System.out.println("Pokémon encontrado!");
+                                    pkAlterar.apagar("pokemons.json", Pokemon.class);
+                                    System.out.println("Pokémon removido com sucesso!");
                                 } else {
                                     System.out.println("Pokémon não encontrado.");
                                     break;
                                 }
-                                pkAlterar.apagar("pokemons.json", Pokemon.class);
-                                System.out.println("Pokémon removido com sucesso!");
                                 break;
                             case 4:
                                 break;
@@ -244,10 +326,9 @@ public class Main {
                     System.out.println("3. Remover Treinador");
                     System.out.println("4. Voltar");
                     int treinadorOpcao = scanner.nextInt();
-                    
                         switch (treinadorOpcao) {
                             case 1:
-                                Treinador treinador = Servicos.criarTreinador(totalEntidades + 1, scanner); // ID fixo para exemplo
+                                Treinador treinador = Treinador.criarTreinador(totalEntidades + 1, scanner); // ID fixo para exemplo
                                 break;
                             case 2:
                                 scanner.nextLine(); // Consumir a nova linha
@@ -264,7 +345,8 @@ public class Main {
                                 System.out.println("1. Nome");
                                 System.out.println("2. Região");
                                 System.out.println("3. Insígnias");
-                                System.out.println("4. Voltar");
+                                System.out.println("4. Pokémons");
+                                System.out.println("5. Voltar");
                                 int alterarTreinadorOpcao = scanner.nextInt();
                                 switch (alterarTreinadorOpcao) {
                                     case 1:
@@ -290,7 +372,41 @@ public class Main {
                                         System.out.println("Número de insígnias do Treinador alterado com sucesso!");
                                         break;
                                     case 4:
-                                        break;
+                                        System.out.println("O que deseja fazer com os Pokémons do Treinador?");
+                                        System.out.println("1. Adicionar Pokémon");
+                                        System.out.println("2. Remover Pokémon");
+                                        int pokemonTreinadorOpcao = scanner.nextInt();
+                                        switch (pokemonTreinadorOpcao) {
+                                            case 1:
+                                                scanner.nextLine(); // Limpar o buffer
+                                                System.out.println("Digite o nome do Pokémon para adicionar ao Treinador:");
+                                                String nomePokemonAdicionar = scanner.nextLine();
+                                                Pokemon pokemonAdicionar = Pokemon.buscarPokemonPorNome(todosPokemons, nomePokemonAdicionar);
+                                                if (pokemonAdicionar != null) {
+                                                    treinadorAlterar.addPokemon(pokemonAdicionar);
+                                                    treinadorAlterar.salvar("treinadores.json", Treinador.class);
+                                                    System.out.println("Pokémon adicionado ao Treinador com sucesso!");
+                                                } else {
+                                                    System.out.println("Pokémon não encontrado.");
+                                                }
+                                                break;
+                                            case 2: 
+                                                scanner.nextLine(); // Limpar o buffer
+                                                System.out.println("Digite o nome do Pokémon para remover do Treinador:");
+                                                String nomePokemonRemover = scanner.nextLine();
+                                                Pokemon pokemonRemover = Pokemon.buscarPokemonPorNome(todosPokemons, nomePokemonRemover);
+                                                if (pokemonRemover != null) {
+                                                    treinadorAlterar.removerPokemon(pokemonRemover);
+                                                    treinadorAlterar.salvar("treinadores.json", Treinador.class);
+                                                    System.out.println("Pokémon removido do Treinador com sucesso!");
+                                                } else {
+                                                    System.out.println("Pokémon não encontrado.");
+                                                }
+                                                break;
+                                            default:
+                                                System.out.println("Opção inválida. Tente novamente.");
+                                                break;
+                                        }
                                     default:
                                         System.out.println("Opção inválida. Tente novamente.");
                                 }

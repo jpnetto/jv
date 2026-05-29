@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Scanner;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -80,14 +81,21 @@ public class Treinador extends Entidade {
         return null;
     }
 
-    // Função para adicionar uma fraqueza a um tipo usando o nome da fraqueza
-    public static boolean adicionarFraquezaPorNome(Treinador treinador, List<Pokemon> pokemonsDisponiveis, String nomePokemon) {
-        Pokemon Pk = Pokemon.buscarPokemonPorNome(pokemonsDisponiveis, nomePokemon);
-        if (Pk != null) {
-            treinador.addPokemon(Pk);
-            return true;
-        }
-        return false;
+    public static Treinador criarTreinador(int id, Scanner scanner){
+        scanner = new Scanner(System.in);
+        System.out.print("Digite o nome do Treinador: ");
+        String nome = scanner.nextLine();
+
+        System.out.print("Digite a região do Treinador: ");
+        String regiao = scanner.nextLine();
+
+        System.out.print("Digite o número de insígnias do Treinador: ");
+        int insignias = scanner.nextInt();
+
+        Treinador treinador = new Treinador(id, nome, regiao, insignias);
+        System.out.println("Treinador criado com sucesso!");
+        treinador.salvar("treinadores.json", Treinador.class);
+        return treinador;
     }
 
     @Override

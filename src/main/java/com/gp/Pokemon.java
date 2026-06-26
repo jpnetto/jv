@@ -1,15 +1,11 @@
 package com.gp;
-import java.io.File;
-import java.io.IOException;
+
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.Scanner;
 
-public class Pokemon extends Entidade{
-
+public class Pokemon extends Entidade {
 
     //atributos da classe
     private String nome;
@@ -20,19 +16,18 @@ public class Pokemon extends Entidade{
     private int stats;
     private String descricao;
 
-
     //getters e setters
 
     public Pokemon() {
-        
+
     }
 
     public Pokemon(@JsonProperty("id") int id,
-                    @JsonProperty("nome") String nome, 
-                    @JsonProperty("numeroPokedex") int numeroPokedex, 
-                    @JsonProperty("altura") double altura, 
-                    @JsonProperty("peso") double peso, 
-                    @JsonProperty("stats") int stats, 
+                    @JsonProperty("nome") String nome,
+                    @JsonProperty("numeroPokedex") int numeroPokedex,
+                    @JsonProperty("altura") double altura,
+                    @JsonProperty("peso") double peso,
+                    @JsonProperty("stats") int stats,
                     @JsonProperty("descricao") String descricao) {
         super(id);
         this.nome = nome;
@@ -92,7 +87,6 @@ public class Pokemon extends Entidade{
         this.stats = stats;
     }
 
-
     public void adicionarTipo(Tipo tipo) {
         this.tipo.add(tipo);
     }
@@ -103,14 +97,14 @@ public class Pokemon extends Entidade{
 
     public List<Tipo> getTipos() {
         return tipo;
-    } 
+    }
 
     //funções
-    public String toString(){
+    public String toString() {
         return "id = " + id;
     }
 
-    // Função para buscar um tipo por nome em uma lista de tipos
+    // Função para buscar um pokémon por nome em uma lista de pokémons
     public static Pokemon buscarPokemonPorNome(List<Pokemon> pokemons, String nome) {
         for (Pokemon pokemon : pokemons) {
             if (pokemon.getNome().equalsIgnoreCase(nome)) {
@@ -119,9 +113,10 @@ public class Pokemon extends Entidade{
         }
         return null;
     }
-    
-    public static Pokemon criarPokemon(int id, Scanner scanner){
-        scanner = new Scanner(System.in);
+
+    // Apenas constrói o objeto a partir da entrada do usuário.
+    // Quem decide salvar (via EntidadeDAO) é quem chama este método.
+    public static Pokemon criarPokemon(int id, Scanner scanner) {
         System.out.print("Digite o nome do Pokémon: ");
         String nome = scanner.nextLine();
 
@@ -143,35 +138,8 @@ public class Pokemon extends Entidade{
 
         Pokemon pokemon = new Pokemon(id, nome, numeroPokedex, altura, peso, stats, descricao);
         System.out.println("Pokémon criado com sucesso!");
-        pokemon.salvar("pokemons.json", Pokemon.class);
 
         return pokemon;
     }
-
-    @Override
-    public List<Pokemon> carregarTodos() {
-        ObjectMapper mapper = new ObjectMapper();
-        File arquivo = new File("pokemons.json");
-
-        
-        if (!arquivo.exists() || arquivo.length() == 0) {
-            System.out.println("Não há pokémons por enquanto!");
-            return Collections.emptyList();
-        }
-
-        try {
-            return mapper.readValue(
-                arquivo,
-                new com.fasterxml.jackson.core.type.TypeReference<List<Pokemon>>() {}
-            );
-        } catch (IOException e) {
-            e.printStackTrace();
-            return Collections.emptyList();
-        }
-    }
-
-    
-    
-    
 
 }

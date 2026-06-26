@@ -1,14 +1,11 @@
 package com.gp;
-import java.io.File;
-import java.io.IOException;
+
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Scanner;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class Treinador extends Entidade {
 
@@ -16,12 +13,12 @@ public class Treinador extends Entidade {
     private String regiao;
     private List<Pokemon> pokemons;
     private int insignias;
-    
+
     @JsonCreator
     public Treinador(@JsonProperty("id") int id,
-                     @JsonProperty("nome") String nome,
-                     @JsonProperty("regiao") String regiao,
-                     @JsonProperty("insignias") int insignias) {
+                      @JsonProperty("nome") String nome,
+                      @JsonProperty("regiao") String regiao,
+                      @JsonProperty("insignias") int insignias) {
         super(id);
         this.nome = nome;
         this.regiao = regiao;
@@ -30,10 +27,8 @@ public class Treinador extends Entidade {
     }
 
     public Treinador() {
-        
-    }
 
-    
+    }
 
     public void addPokemon(Pokemon pokemon) {
         pokemons.add(pokemon);
@@ -71,7 +66,7 @@ public class Treinador extends Entidade {
         this.insignias = insignias;
     }
 
-    // Função para buscar um tipo por nome em uma lista de tipos
+    // Função para buscar um treinador por nome em uma lista de treinadores
     public static Treinador buscarTreinadorPorNome(List<Treinador> treinadores, String nome) {
         for (Treinador treinador : treinadores) {
             if (treinador.getNome().equalsIgnoreCase(nome)) {
@@ -81,8 +76,9 @@ public class Treinador extends Entidade {
         return null;
     }
 
-    public static Treinador criarTreinador(int id, Scanner scanner){
-        scanner = new Scanner(System.in);
+    // Apenas constrói o objeto a partir da entrada do usuário.
+    // Quem decide salvar (via EntidadeDAO) é quem chama este método.
+    public static Treinador criarTreinador(int id, Scanner scanner) {
         System.out.print("Digite o nome do Treinador: ");
         String nome = scanner.nextLine();
 
@@ -94,33 +90,7 @@ public class Treinador extends Entidade {
 
         Treinador treinador = new Treinador(id, nome, regiao, insignias);
         System.out.println("Treinador criado com sucesso!");
-        treinador.salvar("treinadores.json", Treinador.class);
         return treinador;
     }
-
-    @Override
-    public List<Treinador> carregarTodos() {
-        ObjectMapper mapper = new ObjectMapper();
-        File arquivo = new File("treinadores.json");
-
-        if (!arquivo.exists() || arquivo.length() == 0) {
-            System.out.println("Não há treinadores por enquanto!");
-            return Collections.emptyList();
-        }
-
-        try {
-            return mapper.readValue(
-                arquivo,
-                new com.fasterxml.jackson.core.type.TypeReference<List<Treinador>>() {}
-            );
-        } catch (IOException e) {
-            e.printStackTrace();
-            return Collections.emptyList();
-        }
-    }
-
-
-
-    
 
 }

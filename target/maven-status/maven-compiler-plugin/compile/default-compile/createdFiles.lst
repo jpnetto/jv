@@ -1,9 +1,6 @@
-com/gp/Tipo$1.class
+com/gp/persistencia/DAOFactory.class
 com/gp/Tipo.class
-com/gp/Treinador$1.class
 com/gp/Treinador.class
 com/gp/Servicos.class
-com/gp/Main.class
-com/gp/Pokemon$1.class
-com/gp/Entidade.class
-com/gp/Pokemon.class
+com/gp/persistencia/PersistenceException.class
+com/gp/persistencia/EntidadeDAO.class

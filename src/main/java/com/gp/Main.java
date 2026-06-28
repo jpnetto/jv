@@ -1,6 +1,5 @@
 package com.gp;
 
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -16,10 +15,12 @@ public class Main {
     private static final EntidadeDAO<Tipo> tipoDAO = DAOFactory.getDAO(Tipo.class);
     private static final EntidadeDAO<Pokemon> pokemonDAO = DAOFactory.getDAO(Pokemon.class);
     private static final EntidadeDAO<Treinador> treinadorDAO = DAOFactory.getDAO(Treinador.class);
+    private static final EntidadeDAO<Batalha> batalhaDAO = DAOFactory.getDAO(Batalha.class);
 
     private static final String ARQUIVO_TIPOS = "tipos.json";
     private static final String ARQUIVO_POKEMONS = "pokemons.json";
     private static final String ARQUIVO_TREINADORES = "treinadores.json";
+    private static final String ARQUIVO_BATALHAS = "batalhas.json";
 
     // Converte o array retornado por carregarTodos() em List, tratando o caso de conjunto vazio
     private static <E extends Entidade> List<E> listar(EntidadeDAO<E> dao) {
@@ -41,6 +42,7 @@ public class Main {
             tipoDAO.recuperar(ARQUIVO_TIPOS);
             pokemonDAO.recuperar(ARQUIVO_POKEMONS);
             treinadorDAO.recuperar(ARQUIVO_TREINADORES);
+            batalhaDAO.recuperar(ARQUIVO_BATALHAS);
         } catch (PersistenceException e) {
             System.out.println("Erro ao carregar dados salvos: " + e.getMessage());
         }
@@ -48,7 +50,7 @@ public class Main {
         Scanner scanner = new Scanner(System.in);
 
         while (true) {
-            int totalEntidades = tipoDAO.size() + pokemonDAO.size() + treinadorDAO.size();
+            int totalEntidades = tipoDAO.size() + pokemonDAO.size() + treinadorDAO.size() + batalhaDAO.size();
             List<Tipo> todosTipos = listar(tipoDAO);
             List<Pokemon> todosPokemons = listar(pokemonDAO);
             List<Treinador> todosTreinadores = listar(treinadorDAO);
@@ -75,7 +77,7 @@ public class Main {
                     System.out.println("3. Remover Tipo");
                     System.out.println("6. Voltar");
                     int tipoOpcao = scanner.nextInt();
-                    scanner.nextLine();
+                    scanner.nextLine(); // Consumir a nova linha
                     switch (tipoOpcao) {
                         case 1: {
                             Tipo novoTipo = Tipo.criarTipo(totalEntidades + 1, scanner);
@@ -90,7 +92,6 @@ public class Main {
                         }
                         case 2: {
                             System.out.print("Digite o nome do tipo que deseja alterar: ");
-                            
                             String nomeTipo = scanner.nextLine();
                             Tipo tipoAlterar = Tipo.buscarTipoPorNome(todosTipos, nomeTipo);
                             if (tipoAlterar != null) {
@@ -189,7 +190,6 @@ public class Main {
                         }
                         case 3: {
                             System.out.print("Digite o nome do Tipo: ");
-                            
                             String nomeTipo = scanner.nextLine();
                             Tipo tipoRemover = Tipo.buscarTipoPorNome(todosTipos, nomeTipo);
                             if (tipoRemover != null) {
@@ -220,7 +220,7 @@ public class Main {
                     System.out.println("3. Remover Pokémon");
                     System.out.println("4. Voltar");
                     int pokemonOpcao = scanner.nextInt();
-                    scanner.nextLine();
+                    scanner.nextLine(); // Consumir a nova linha
                     switch (pokemonOpcao) {
                         case 1: {
                             Pokemon novoPokemon = Pokemon.criarPokemon(totalEntidades + 1, scanner);
@@ -235,7 +235,6 @@ public class Main {
                         }
                         case 2: {
                             System.out.print("Digite o nome do Pokémon: ");
-                            //
                             String nomePokemon = scanner.nextLine();
                             Pokemon pokemonAlterar = Pokemon.buscarPokemonPorNome(todosPokemons, nomePokemon);
                             if (pokemonAlterar != null) {
@@ -339,7 +338,6 @@ public class Main {
                         }
                         case 3: {
                             System.out.print("Digite o nome do Pokémon: ");
-                            
                             String nomePk = scanner.nextLine();
                             Pokemon pkAlterar = Pokemon.buscarPokemonPorNome(todosPokemons, nomePk);
                             if (pkAlterar != null) {
@@ -370,7 +368,7 @@ public class Main {
                     System.out.println("3. Remover Treinador");
                     System.out.println("4. Voltar");
                     int treinadorOpcao = scanner.nextInt();
-                    scanner.nextLine();
+                    scanner.nextLine(); // Consumir a nova linha
                     switch (treinadorOpcao) {
                         case 1: {
                             Treinador novoTreinador = Treinador.criarTreinador(totalEntidades + 1, scanner);
@@ -384,7 +382,6 @@ public class Main {
                             break;
                         }
                         case 2: {
-                            
                             System.out.print("Digite o nome do Treinador: ");
                             String nomeTreinador = scanner.nextLine();
                             Treinador treinadorAlterar = Treinador.buscarTreinadorPorNome(todosTreinadores, nomeTreinador);
@@ -466,7 +463,6 @@ public class Main {
                         }
                         case 3: {
                             System.out.print("Digite o nome do Treinador: ");
-                            
                             String nomeTreinador = scanner.nextLine();
                             Treinador treinadorRemover = Treinador.buscarTreinadorPorNome(todosTreinadores, nomeTreinador);
                             if (treinadorRemover != null) {
@@ -492,7 +488,6 @@ public class Main {
 
                 case 4: {
                     System.out.println("Digite o nome do primeiro treinador:");
-                    
                     String nomeTreinador1 = scanner.nextLine();
                     Treinador treinador1 = Treinador.buscarTreinadorPorNome(todosTreinadores, nomeTreinador1);
                     if (treinador1 != null) {
@@ -511,8 +506,16 @@ public class Main {
                         System.out.println("Treinador não encontrado.");
                         break;
                     }
-                    Treinador vencedor = Servicos.compararTreinadores(treinador1, treinador2);
-                    atualizarTreinador(vencedor, "Resultado da batalha salvo com sucesso!");
+                    Batalha batalha = Servicos.realizarBatalha(totalEntidades + 1, treinador1, treinador2);
+                    try {
+                        batalhaDAO.salvar(batalha);
+                        batalhaDAO.persistir(ARQUIVO_BATALHAS);
+                        treinadorDAO.atualizar(batalha.getVencedor());
+                        treinadorDAO.persistir(ARQUIVO_TREINADORES);
+                        System.out.println("Resultado da batalha salvo com sucesso!");
+                    } catch (PersistenceException e) {
+                        System.out.println("Erro ao salvar resultado da batalha: " + e.getMessage());
+                    }
                     break;
                 }
 

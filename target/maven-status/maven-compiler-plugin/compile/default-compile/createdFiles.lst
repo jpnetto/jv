@@ -1,6 +1,2 @@
-com/gp/persistencia/DAOFactory.class
-com/gp/Tipo.class
-com/gp/Treinador.class
-com/gp/Servicos.class
 com/gp/persistencia/PersistenceException.class
 com/gp/persistencia/EntidadeDAO.class

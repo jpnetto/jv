@@ -4,16 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * Entidade de transação (análoga a uma Venda/Locação/Consulta no enunciado).
- * Representa o registro de uma batalha entre dois Treinadores.
- *
- * Possui uma composição 1 para muitos com ItemBatalha (a classe intermediária):
- * cada confronto entre um Pokémon de treinador1 e um Pokémon de treinador2 gera
- * um ItemBatalha, que é salvo junto com a própria Batalha.
- *
- * Também possui associação com Treinador (treinador1, treinador2 e vencedor).
- */
 public class Batalha extends Entidade {
 
     private Treinador treinador1;
@@ -66,6 +56,10 @@ public class Batalha extends Entidade {
 
     public void setVencedor(Treinador vencedor) {
         this.vencedor = vencedor;
+    }
+
+    public void setConfrontos(List<ItemBatalha> confrontos) {
+        this.confrontos = confrontos;
     }
 
     public List<ItemBatalha> getConfrontos() {

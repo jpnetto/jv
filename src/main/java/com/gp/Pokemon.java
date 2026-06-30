@@ -95,6 +95,10 @@ public class Pokemon extends Entidade {
         this.tipo.remove(tipo);
     }
 
+    public void setTipos(List<Tipo> tipo) {
+        this.tipo = tipo;
+    }
+
     public List<Tipo> getTipos() {
         return tipo;
     }

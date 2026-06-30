@@ -3,13 +3,12 @@ package com.gp;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Classe intermediária da composição 1..* entre Batalha e Pokemon.
- * Cada ItemBatalha representa um confronto entre dois Pokémons (um de cada Treinador)
- * dentro de uma Batalha, análogo a como ItemVenda representa um Produto + quantidade
- * dentro de uma Venda.
+ * Classe intermediária da composição 1.* entre Batalha e Pokemon.
+ * Cada ItemBatalha representa um confronto entre dois Pokémons
+ * dentro de uma Batalha.
  *
  * Não é uma subclasse de Entidade: não possui id próprio nem é armazenada em um
- * EntidadeDAO separado — ela só existe "dentro" de uma Batalha e é salva junto com ela.
+ * EntidadeDAO separado, ela só existe "dentro" de uma Batalha e é salva junto com ela.
  */
 public class ItemBatalha {
 

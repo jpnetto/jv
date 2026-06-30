@@ -81,8 +81,6 @@ public class Treinador extends Entidade {
         return null;
     }
 
-    // Apenas constrói o objeto a partir da entrada do usuário.
-    // Quem decide salvar (via EntidadeDAO) é quem chama este método.
     public static Treinador criarTreinador(int id, Scanner scanner) {
         System.out.print("Digite o nome do Treinador: ");
         String nome = scanner.nextLine();

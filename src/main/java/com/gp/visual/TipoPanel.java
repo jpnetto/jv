@@ -54,6 +54,7 @@ public class TipoPanel extends JPanel {
         };
         table = new JTable(tableModel);
         table.setRowHeight(32);
+        table.setAutoCreateRowSorter(true); // permite ordenar clicando no cabeçalho de qualquer coluna
         table.setFont(Tema.FONTE_NORMAL);
         table.getTableHeader().setFont(Tema.FONTE_SUB);
         table.getTableHeader().setBackground(Tema.AZUL);
@@ -63,8 +64,11 @@ public class TipoPanel extends JPanel {
 
         table.addMouseListener(new MouseAdapter() {
             @Override public void mouseClicked(MouseEvent e) {
-                int row = table.getSelectedRow();
-                if (row >= 0) carregarParaEdicao((int) tableModel.getValueAt(row, 0));
+                int viewRow = table.getSelectedRow();
+                if (viewRow >= 0) {
+                    int modelRow = table.convertRowIndexToModel(viewRow); // necessário por causa da ordenação
+                    carregarParaEdicao((int) tableModel.getValueAt(modelRow, 0));
+                }
             }
         });
 

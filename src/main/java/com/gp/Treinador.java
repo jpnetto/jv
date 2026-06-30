@@ -30,14 +30,11 @@ public class Treinador extends Entidade {
 
     }
 
-<<<<<<< HEAD
-=======
     @Override
     public String toString() {
         return "Nome:"+ nome + " [id:" + id + "]";
     }
 
->>>>>>> e6d8f42 (Implementação da parte visual do projeto)
     public void addPokemon(Pokemon pokemon) {
         pokemons.add(pokemon);
     }

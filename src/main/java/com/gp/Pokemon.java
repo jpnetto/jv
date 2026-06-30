@@ -99,20 +99,12 @@ public class Pokemon extends Entidade {
         return tipo;
     }
 
-<<<<<<< HEAD
-    //funções
-    public String toString() {
-        return "id = " + id;
-    }
-
-=======
     @Override
     public String toString() {
         return "Nome:"+ nome + " [id:" + id + "]";
     }
 
 
->>>>>>> e6d8f42 (Implementação da parte visual do projeto)
     // Função para buscar um pokémon por nome em uma lista de pokémons
     public static Pokemon buscarPokemonPorNome(List<Pokemon> pokemons, String nome) {
         for (Pokemon pokemon : pokemons) {

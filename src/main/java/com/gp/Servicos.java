@@ -15,16 +15,11 @@ public class Servicos {
 
         for (Tipo t1 : tipo1) {
             for (Tipo t2 : tipo2) {
-<<<<<<< HEAD
-                if (t1.getFraquezas().contains(t2)) {
-                    cont1++; // p1 tem vantagem sobre p2
-=======
                 List <Tipo> fraq1 = t1.getFraquezas();
                 for(Tipo fraq : fraq1){
                     if (fraq == t2){
                         cont1++;
                     }
->>>>>>> e6d8f42 (Implementação da parte visual do projeto)
                 }
             }
         }
@@ -32,26 +27,15 @@ public class Servicos {
         // Verifica se algum tipo de p2 é fraco contra algum tipo de p1
         for (Tipo t2 : tipo2) {
             for (Tipo t1 : tipo1) {
-<<<<<<< HEAD
-                if (t2.getFraquezas().contains(t1)) {
-                    cont1++;
-=======
                 List <Tipo> fraq2 = t2.getFraquezas();
                 for(Tipo fraq : fraq2){
                     if (fraq == t1){
                         cont2++;
                     }
->>>>>>> e6d8f42 (Implementação da parte visual do projeto)
                 }
             }
         }
         if (cont1 == cont2) {
-<<<<<<< HEAD
-            return (p1.getStats() > p2.getStats()) ? p1 : p2;
-
-        } else {
-            return (cont1 > cont2) ? p1 : p2;
-=======
             if (p1.getStats()> p2.getStats()){
                 return p1;
             }
@@ -65,7 +49,6 @@ public class Servicos {
             else{
                 return p2;
             }
->>>>>>> e6d8f42 (Implementação da parte visual do projeto)
         }
     }
 

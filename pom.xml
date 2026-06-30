@@ -53,11 +53,7 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
 <configuration>
 <transformers>
 <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-<<<<<<< HEAD
-<mainClass>com.gp.Main</mainClass>
-=======
 <mainClass>com.gp.visual.MainFrame</mainClass>
->>>>>>> e6d8f42 (Implementação da parte visual do projeto)
 </transformer>
 </transformers>
 </configuration>

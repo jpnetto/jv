@@ -81,9 +81,18 @@ public class Tipo extends Entidade {
         return fraquezas;
     }
 
+<<<<<<< HEAD
     @Override
     public String toString() {
         return "Tipo: " + nome + " - " + descricao;
     }
 
+=======
+     @Override
+    public String toString() {
+        return "Nome:"+ nome + " [id:" + id + "]";
+    }
+
+
+>>>>>>> e6d8f42 (Implementação da parte visual do projeto)
 }
